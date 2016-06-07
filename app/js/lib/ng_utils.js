@@ -1624,7 +1624,7 @@ angular.module('izhukov.utils', [])
             break;
           }
           var url = entity.url || entityText;
-          url = wrapUrl(url, entity._ == 'messageEntityTextUrl');
+          url = wrapUrl(url, entity._ == 'messageEntityTextUrl' ? 2 : false);
           html.push(
             '<a href="',
             encodeEntities(url),
@@ -1785,7 +1785,10 @@ angular.module('izhukov.utils', [])
       url = 'http://' + url;
     }
     var tgMeMatch;
-    if ((tgMeMatch = url.match(/^https?:\/\/telegram\.me\/(.+)/))) {
+    if (unsafe == 2) {
+      url = 'tg://unsafe_url?url=' + encodeURIComponent(url);
+    }
+    else if ((tgMeMatch = url.match(/^https?:\/\/telegram\.me\/(.+)/))) {
       var path = tgMeMatch[1].split('/');
       switch (path[0]) {
         case 'joinchat':
